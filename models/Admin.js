@@ -7,6 +7,7 @@ const AdminSchema = new mongoose.Schema({
     email: String,  
     phone: String,  
     password:String,
+    muddasir loru hai
 
 
 
