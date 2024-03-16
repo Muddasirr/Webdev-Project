@@ -1,11 +1,12 @@
 const mongoose=require('mongoose');
 
 const SuperAdminSchema = new mongoose.Schema({
-    AdminId: String,
-    BranchId: String,
+    SuperAdminId: String,
+    
     name: String,   
     email: String,  
     phone: String,  
+    password:String,
 
 
 
