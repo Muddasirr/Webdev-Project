@@ -7,7 +7,7 @@ const CashierSchema = new mongoose.Schema({
     email: String,  
     phone: String,  
     password:String,
-
+    frrr
 
 
 
