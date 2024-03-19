@@ -9,9 +9,10 @@ var router = express.Router();
 
 router.post('/addproducts', async (req, res) => {
     try {
-        const { name, quantity, pricing } = req.body;
+        const { Product_name,product_brand, quantity, pricing } = req.body;
         const newProduct = new Product({
-            name,
+            Product_name,
+            product_brand,
             quantity,
             pricing
         });

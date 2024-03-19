@@ -5,10 +5,10 @@ const productschema =  mongoose.Schema({
        // default: mongoose.Types.ObjectId
     //},
     prod_id: { type: String, unique: true },
-    Prodcut_name: String,
+    Product_name: String,
     Product_Brand: String, 
     quantity: Number,
-    price: String,
+    price: Number,
     createdAt: {
         type: Date,
         default: Date.now
