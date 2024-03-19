@@ -8,8 +8,6 @@ const supplierSchema = new mongoose.Schema({
     phone: String,  
     password:String,
 
-
-
 })
 const Supplier = mongoose.model('Supplier', supplierSchema);
 module.exports = Supplier;
