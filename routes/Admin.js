@@ -47,6 +47,19 @@ if(req.body.type==="cashier"){
 
 })
 
+router.get("/getProducts", async (req, res) => {
+    try {
+        const Products = await Product.find();
+res.json(Products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+
+
+
+})
+
 router.get("/getOrders", async (req, res) => {
 
     try {
