@@ -15,7 +15,9 @@ const productschema =  mongoose.Schema({
     }
 });
 
-let lastUsedId = 200;
+
+
+let lastUsedId = 207;
 productschema.pre('save', function (next) {
   if (!this.prod_id) {
       lastUsedId++;
@@ -29,3 +31,4 @@ productschema.pre('save', function (next) {
 const product_collect = mongoose.model('product_collect', productschema);
 
 module.exports = product_collect;
+
