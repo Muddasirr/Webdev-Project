@@ -7,7 +7,14 @@ const AdminSchema = new mongoose.Schema({
     email: String,  
     phone: String,  
     password:String,
-    
+
+
+
+
+
+
+
+
 
 })
 const Admin = mongoose.model('Admin', AdminSchema);
