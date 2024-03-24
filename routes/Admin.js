@@ -2,7 +2,7 @@ const Cashier = require('../models/Cashier');
 const Supplier = require('../models/Supplier');
 const express = require('express');
 const router = express.Router();
-const jwt=require('jsonwebtoken');
+
 const Orders= require("../models/order")
 const Product=require("../models/Product")
 
@@ -13,7 +13,7 @@ try {
         await Cashier.create(req.body);
     return res.status(201).json({ message: "Cashier created successfully" });
     }
-        else if(req.body.type==="superadmin"){
+        else if(req.body.type==="supplier"){
             await Supplier.create(req.body);
             return res.status(201).json({ message: "Supplier created successfully" });
         }
@@ -91,5 +91,8 @@ try {
 } catch (error) {
     
     console.error(error);}})
+
+
+    module.exports = router;
 
 
