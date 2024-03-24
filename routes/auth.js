@@ -6,6 +6,7 @@ const admin = require("../models/Admin")
 const cashier = require("../models/Cashier")
 const supplier = require("../models/Supplier")
 const SuperAdmin = require("../models/SuperAdmin")
+const userr = require("../models/Employees")
 //router.get('/signup', (req,res)=>{
     //res.render('signup')
 
@@ -19,56 +20,30 @@ const SuperAdmin = require("../models/SuperAdmin")
 //})
 
 
-router.post('/adminlogin', async (req, res) => {
-try {
-    const { name, password } = req.body;
-
-    const user = await admin.findOne({ name: req.body.name });
-    if (!user) {
-        return res.json({ msg: "USER NOT FOUND" });
-    }
-
-    const passwordCheck = await bcrypt.compare(password, user.password);
-    if (!passwordCheck) {
-        return res.json({ msg: "WRONG PASSWORD" });
-    }
-
-    const token = jwt.sign({
-        name,
-        createdAt: new Date(),
-        admin: user.admin,
-    }, "MY_SECRET", { expiresIn: "1d" });
-
-    return res.json({
-        msg: "LOGGED IN", token
-    });
-} catch (error) {
-    console.error(error);
-    return res.status(500).json({ msg: "SERVER ERROR" });
-}
-});
 
 
 
-router.post('/cashierlogin', async (req, res) => {
+
+router.post('/login', async (req, res) => {
     try {
         const { name, password } = req.body;
     
-        const user = await cashier.findOne({ name: req.body.name });
+        const user = await userr.findOne({ name: req.body.name });
         console.log(user);
         if (!user) {
             return res.json({ msg: "USER NOT FOUND" });
         }
     
-        //const passwordCheck = await bcrypt.compare(password, user.password);
-        //if (!passwordCheck) {
-            //return res.json({ msg: "WRONG PASSWORD" });
-        //}
+        const passwordCheck = await userr.findOne({ password: req.body.password });
+        if (!passwordCheck) {
+            return res.json({ msg: "WRONG PASSWORD" });
+        }
     
         const token = jwt.sign({
             name,
             createdAt: new Date(),
-            admin: user.admin,
+            //admin: user.admin,
+            userId: user.userId,
         }, "MY_SECRET", { expiresIn: "1d" });
     
         return res.json({
@@ -81,66 +56,7 @@ router.post('/cashierlogin', async (req, res) => {
     });
 
 
-    router.post('/supplierlogin', async (req, res) => {
-        try {
-            const { name, password } = req.body;
-        
-            const user = await supplier.findOne({ name: req.body.name });
-            if (!user) {
-                return res.json({ msg: "USER NOT FOUND" });
-            }
-        
-            const passwordCheck = await bcrypt.compare(password, user.password);
-            if (!passwordCheck) {
-                return res.json({ msg: "WRONG PASSWORD" });
-            }
-        
-            const token = jwt.sign({
-                name,
-                createdAt: new Date(),
-                admin: user.admin,
-            }, "MY_SECRET", { expiresIn: "1d" });
-        
-            return res.json({
-                msg: "LOGGED IN", token
-            });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ msg: "SERVER ERROR" });
-        }
-        });
-
-
-
-        router.post('/superadminlogin', async (req, res) => {
-            try {
-                const { name, password } = req.body;
-            
-                const user = await SuperAdmin.findOne({ name: req.body.name });
-                if (!user) {
-                    return res.json({ msg: "USER NOT FOUND" });
-                }
-            
-                const passwordCheck = await bcrypt.compare(password, user.password);
-                if (!passwordCheck) {
-                    return res.json({ msg: "WRONG PASSWORD" });
-                }
-            
-                const token = jwt.sign({
-                    name,
-                    createdAt: new Date(),
-                    admin: user.admin,
-                }, "MY_SECRET", { expiresIn: "1d" });
-            
-                return res.json({
-                    msg: "LOGGED IN", token
-                });
-            } catch (error) {
-                console.error(error);
-                return res.status(500).json({ msg: "SERVER ERROR" });
-            }
-            });
-
+    
 
 /*router.post('/signup', async (req, res) => {
 try {
