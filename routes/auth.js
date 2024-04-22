@@ -2,58 +2,62 @@ const bcrypt = require("bcrypt");
 var express = require("express");
 var router = express.Router();
 const jwt = require("jsonwebtoken")
-const admin = require("../models/Admin")
-const cashier = require("../models/Cashier")
-const supplier = require("../models/Supplier")
-const SuperAdmin = require("../models/SuperAdmin")
-const userr = require("../models/Employees")
-//router.get('/signup', (req,res)=>{
-    //res.render('signup')
-
-//})
+const Users = require("../models/Employees")
 
 
 
-//router.get('/' , (req,res)=>{
-//res.render('login')
+router.post("/signUp", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-//})
+    let user = await Users.findOne({ email });
+    if (user) return res.json({ msg: "USER EXISTS" });
 
-
-
-
-
-
-router.post('/login', async (req, res) => {
-    try {
-        const { name, password } = req.body;
-    
-        const user = await userr.findOne({ name: req.body.name });
-        console.log(user);
-        if (!user) {
-            return res.json({ msg: "USER NOT FOUND" });
-        }
-    
-        const passwordCheck = await userr.findOne({ password: req.body.password });
-        if (!passwordCheck) {
-            return res.json({ msg: "WRONG PASSWORD" });
-        }
-    
-        const token = jwt.sign({
-            name,
-            createdAt: new Date(),
-            //admin: user.admin,
-            userId: user.userId,
-        }, "MY_SECRET", { expiresIn: "1d" });
-    
-        return res.json({
-            msg: "LOGGED IN", token
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ msg: "SERVER ERROR" });
-    }
+    await Users.create({
+      ...req.body,
+      password: await bcrypt.hash(password, 5),
     });
+
+    return res.json({ msg: "CREATED" });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.post("/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      const user = await Users.findOne({ email });
+      if (!user) return res.json({ msg: "USER NOT FOUND" });
+  
+      const passwordCheck = await bcrypt.compare(password, user.password);
+      if (!passwordCheck) return res.json({ msg: "WRONG PASSWORD" });
+  
+      const token = jwt.sign(
+        {
+          _id: user._id,
+          email,
+          createdAt: new Date(),
+          userType
+        },
+        "MY_SECRET",
+        { expiresIn: "1d" }
+      );
+  
+      res.json({
+        msg: "LOGGED IN",
+        token,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+
+
+
+
 
 
     

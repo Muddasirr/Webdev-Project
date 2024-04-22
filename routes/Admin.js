@@ -1,51 +1,45 @@
-const Cashier = require('../models/Cashier');
-const Supplier = require('../models/Supplier');
+
 const express = require('express');
 const router = express.Router();
+const Users=require("../models/Employees")  
 
 const Orders= require("../models/order")
 const Product=require("../models/Product")
 
-
-router.post('/createEmployee', async (req, res) => {
+router.post('/createEmployee',async (req, res) => {
 try {
-    if(req.body.type==="cashier"){
-        await Cashier.create(req.body);
-    return res.status(201).json({ message: "Cashier created successfully" });
-    }
-        else if(req.body.type==="supplier"){
-            await Supplier.create(req.body);
-            return res.status(201).json({ message: "Supplier created successfully" });
-        }
+    const { email, password } = req.body;
+
+    let user = await Users.findOne({ email });
+    if (user) return res.json({ msg: "USER EXISTS" });
+
+    await Users.create({
+      ...req.body,
+      password: await bcrypt.hash(password, 5),
+    });
+    
 } catch (error) {
-    return res.status(500).json({ message: error.message });
     
 }
 
 
 })
+
+
+
 
 
 
 router.post('/deleteEmployee', async (req, res) => {    
 try {
-if(req.body.type==="cashier"){
-    await Cashier.findOneAndDelete({EmployeeId:req.body.EmployeeId});
-    return res.status(200).json({ message: "Cashier deleted successfully" });}
-    else if(req.body.type==="supplier"){
-        await Supplier.findOneAndDelete({SupplierId:req.body.SupplierId});
-    return res.status(200).json({ message: "Supplier deleted successfully" });    
-    }
+    const {email}=req.body; 
+    await Users.findOneAndDelete({email:email});
 
-
-
-    
 } catch (error) {
-    console.error(error);
-    
-}
-
-})
+  console.error(error);
+  res.status(500).json({ message: 'Server Error' });  
+}}
+)
 
 router.get("/getProducts", async (req, res) => {
     try {

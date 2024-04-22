@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors=require('cors')
 
 const app = express();
 const router = require("./routes/index");
@@ -7,6 +8,7 @@ const router = require("./routes/index");
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors())
 
 // MongoDB connection
 mongoose.connect("mongodb://localhost:27017/webdevproject", { useNewUrlParser: true, useUnifiedTopology: true })

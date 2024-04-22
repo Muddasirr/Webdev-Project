@@ -4,13 +4,13 @@ const jwt = require("jsonwebtoken")
 
 const productRouter = require("./product_index");
 const orderouter = require("./order_index");
-const adminrouter = require("./Admin")
+
 const authRouter = require("./auth");
 
 
-router.use("/products", productRouter);
-router.use("/order", orderouter);
-router.use("/Admin",adminrouter)
+//router.use("/products", productRouter);
+//router.use("/order", orderouter);
+//router.use("/Admin",adminrouter)
 router.use("/auth", authRouter);
 
 
